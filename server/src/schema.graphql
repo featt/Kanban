@@ -1,0 +1,91 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Auth {
+  """JWT access token"""
+  accessToken: JWT!
+
+  """JWT refresh token"""
+  refreshToken: JWT!
+  user: User!
+}
+
+type Board {
+  id: ID!
+  tasks: [Task!]!
+  title: String!
+}
+
+input ChangePasswordInput {
+  newPassword: String!
+  oldPassword: String!
+}
+
+input CreateBoardInput {
+  title: String!
+}
+
+input CreateTaskInput {
+  boardId: Int!
+  title: String!
+}
+
+input GetBoardInput {
+  boardId: Int!
+}
+
+"""
+A field whose value is a JSON Web Token (JWT): https://jwt.io/introduction.
+"""
+scalar JWT
+
+input LoginInput {
+  login: String!
+  password: String!
+}
+
+type Mutation {
+  changePassword(data: ChangePasswordInput!): User!
+  createBoard(data: CreateBoardInput!): [Board!]!
+  createTask(data: CreateTaskInput!): Task!
+  login(data: LoginInput!): Auth!
+  refreshToken(token: JWT!): Token!
+  removeBoard(id: Int!): Board!
+  signup(data: SignupInput!): Auth!
+  updateBoard: Board!
+}
+
+type Query {
+  board(data: GetBoardInput!): Board!
+  getUserBoards: [Board!]!
+  hello(name: String!): String!
+  helloWorld: String!
+  me: User!
+}
+
+input SignupInput {
+  login: String!
+  password: String!
+}
+
+type Task {
+  boardId: Int!
+  id: ID!
+  status: String!
+  title: String!
+}
+
+type Token {
+  """JWT access token"""
+  accessToken: JWT!
+
+  """JWT refresh token"""
+  refreshToken: JWT!
+}
+
+type User {
+  boards: Board!
+  id: ID!
+  login: String!
+}
