@@ -22,6 +22,10 @@ input ChangePasswordInput {
   oldPassword: String!
 }
 
+input ChangeStatusInput {
+  taskId: Int!
+}
+
 input CreateBoardInput {
   title: String!
 }
@@ -52,6 +56,9 @@ type Mutation {
   login(data: LoginInput!): Auth!
   refreshToken(token: JWT!): Token!
   removeBoard(id: Int!): Board!
+  setDone(data: ChangeStatusInput!): Task!
+  setInProgress(data: ChangeStatusInput!): Task!
+  setNotDone(data: ChangeStatusInput!): Task!
   signup(data: SignupInput!): Auth!
   updateBoard: Board!
 }

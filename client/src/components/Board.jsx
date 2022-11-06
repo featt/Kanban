@@ -1,4 +1,4 @@
-import { HStack, Text, useToast, VStack } from "@chakra-ui/react"
+import { HStack, Text, Heading, VStack } from "@chakra-ui/react"
 import Column from "./Column"
 import {
     DndContext,
@@ -12,6 +12,10 @@ import {
 import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { useState } from "react"
 import ColumnItem from "./ColumnItem";
+import { useAtomValue } from "jotai";
+import { selectedBoardId } from "../store";
+import { useQuery } from '@apollo/client'
+import {GET_BOARD} from '../graphql/quereis'
 
 const defaultAnnouncements = {
     onDragStart(id) {
@@ -42,38 +46,39 @@ const defaultAnnouncements = {
     }
   };
 
-const Board = () => {
-    const [items, setItems] = useState({
-        root: ['Сдесь добавляются дела!'],
-        container1: ['Сдесь дела в процессе выполнения!'],
-        container2: ['Сдесь выполненые дела!']        
-      });
-    const [activeId, setActiveId] = useState();    
+const Board = ({ items }) => {
+    const [activeId, setActiveId] = useState();   
     const sensors = useSensors(
         useSensor(PointerSensor),
         useSensor(KeyboardSensor, {
           coordinateGetter: sortableKeyboardCoordinates
         })
     );
-     
+
+
+
+    if(items === null) return <Heading color='white'>Ты дура</Heading>
+
     return (
         <VStack w='80%' bg='#212121' h='100vh' p='55px' >
-                <Text fontSize='32px' color='white'>Title board</Text>
-                <HStack justifyContent='space-around' w='100%' h='100vh' alignItems='flex-start'>
-                    <DndContext
-                        announcements={defaultAnnouncements}
-                        sensors={sensors}
-                        collisionDetection={closestCorners}
-                        onDragStart={handleDragStart}
-                        onDragOver={handleDragOver}
-                        onDragEnd={handleDragEnd}                       
-                    >
-                        <Column id="root" items={items.root} />
-                        <Column id="container1" items={items.container1} />
-                        <Column id="container2" items={items.container2} />
-                        <DragOverlay>{activeId ? <ColumnItem id={activeId} /> : null}</DragOverlay>
-                    </DndContext>
-                </HStack>
+                
+          <Text fontSize='32px' color='white'>Title board</Text>
+          <HStack justifyContent='space-around' w='100%' h='100vh' alignItems='flex-start'>
+              <DndContext
+                  announcements={defaultAnnouncements}
+                  sensors={sensors}
+                  collisionDetection={closestCorners}
+                  onDragStart={handleDragStart}
+                  onDragOver={handleDragOver}
+                  onDragEnd={handleDragEnd}                       
+              >
+                  <Column id="root" items={items.root} />
+                  <Column id="container1" items={items.container1} />
+                  <Column id="container2" items={items.container2} />
+                  <DragOverlay>{activeId ? <ColumnItem id={activeId} /> : null}</DragOverlay>
+              </DndContext>
+          </HStack>
+                 
         </VStack>
     );
 

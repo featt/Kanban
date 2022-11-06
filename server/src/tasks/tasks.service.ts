@@ -1,6 +1,7 @@
 import { PrismaService } from 'nestjs-prisma';
 import { Injectable } from '@nestjs/common';
 import { CreateTaskInput } from './dto/create-task.input';
+import { TaskStatus } from '@prisma/client';
 
 @Injectable()
 export class TasksService {
@@ -17,5 +18,14 @@ export class TasksService {
 
   async getBoardTasks(boardId: number) {
     return await this.prisma.board.findFirst({where: {id: boardId}}).tasks();
+  }
+
+  async changeStatus(taskId: number, status: TaskStatus) {
+    return await this.prisma.task.update({
+      where: {id: taskId},
+      data: {
+        status
+      }
+    })
   }
 }

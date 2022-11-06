@@ -1,8 +1,10 @@
+import { ChangeStatusInput } from './dto/change-status.input';
 import { Board } from './../boards/models/board.model';
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { TasksService } from './tasks.service';
 import { Task } from './models/task.model';
 import { CreateTaskInput } from './dto/create-task.input';
+import { TaskStatus } from '@prisma/client';
 
 @Resolver(() => Task)
 export class TasksResolver {
@@ -11,5 +13,20 @@ export class TasksResolver {
   @Mutation(() => Task)
   createTask(@Args('data') createTaskInput: CreateTaskInput) {
     return this.tasksService.create(createTaskInput.title, createTaskInput.boardId);
+  }
+
+  @Mutation(() => Task)
+  setInProgress(@Args('data') {taskId}: ChangeStatusInput) {
+    return this.tasksService.changeStatus(taskId, TaskStatus.IN_PROGRESS)
+  }
+
+  @Mutation(() => Task)
+  setDone(@Args('data') {taskId}: ChangeStatusInput) {
+    return this.tasksService.changeStatus(taskId, TaskStatus.DONE)
+  }
+
+  @Mutation(() => Task)
+  setNotDone(@Args('data') {taskId}: ChangeStatusInput) {
+    return this.tasksService.changeStatus(taskId, TaskStatus.NOT_DONE)
   }
 }

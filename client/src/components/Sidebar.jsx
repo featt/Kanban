@@ -10,7 +10,7 @@ import BoardList from "./BoardList"
 import { FaSignOutAlt } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom'
 
-const Sidebar = () => {
+const Sidebar = ({ refetchBoards }) => {
     const user = useUserStore(state => state.user)
     const inputRef = useRef()
     const [createBoard, { data }] = useMutation(CREATE_BOARD)  
@@ -40,7 +40,7 @@ const Sidebar = () => {
                 <Button type="submit" ml='10px' color='black' fontSize='12px'>Добавить</Button>                              
             </FormControl>                                 
             
-            <BoardList state={boardsQuery} />    
+            <BoardList state={boardsQuery} refetchBoards={refetchBoards}/>    
 
             <HStack pb='20px' >
                 <Tag size='lg' colorScheme='#292929'>                    
