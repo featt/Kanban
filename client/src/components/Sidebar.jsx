@@ -42,7 +42,7 @@ const Sidebar = () => {
             
             <BoardList state={boardsQuery} />    
 
-            <HStack pb='20px' alignItems='center' justifyContent='center' >
+            <HStack pb='20px' >
                 <Tag size='lg' colorScheme='#292929'>                    
                     <FaUserCircle size='35px'/>
                     <TagLabel fontSize='2xl' ml='10px' color='white'>{user}</TagLabel>
