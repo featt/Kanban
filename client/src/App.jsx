@@ -15,9 +15,9 @@ function App() {
     <Container display='flex' minW='100%' h='100vh' bg='black' px='0'> 
 
       <Routes>             
+        <Route path='/register' element={<Register/>} />      
         <Route path='/login' exact  element={<Login/>} />  
         <Route path='/' element={<Main/>} />      
-        <Route path='/register' element={<Register/>} />      
       </Routes>      
       
     </Container>

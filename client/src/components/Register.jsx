@@ -1,18 +1,20 @@
 import { Box, Button, FormControl, FormHelperText, FormLabel, HStack, Input, Text, useToast } from "@chakra-ui/react"
 import { useState } from "react"
 import { useNavigate, Link } from 'react-router-dom'
-
+import { CREATE_USER } from "../graphql/mutations"
+import { useMutation } from '@apollo/client';
 
 const Register = () => {
     const [login, setLogin] = useState('')
     const [password, setPassword] = useState('')   
     const [passwordSecond, setPasswordSecond] = useState('')   
+    const [signup, { data, loading, error }] = useMutation(CREATE_USER)
     const navigate = useNavigate();
     const toast = useToast()
 
     const handelSubmit = async (event) => {
         event.preventDefault();
-        if(password !== passwordSecond) {
+        if(password !== passwordSecond || error) {
             toast({
                 title: 'Пароли не совпадают',            
                 status: 'error',
@@ -20,6 +22,13 @@ const Register = () => {
                 isClosable: true,
             })
         } else {
+            await signup( { 
+                variables: {
+                        login: login,
+                        password: password
+                    }
+                }
+            )
             navigate('/login');
         }        
     }

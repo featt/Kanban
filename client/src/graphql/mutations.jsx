@@ -21,4 +21,14 @@ const CREATE_BOARD = gql`
     }
 `
 
-export { LOGIN_USER_MUTATION, CREATE_BOARD };
+const CREATE_USER = gql`
+    mutation CreateUser($login: String!, $password: String!) {
+        signup(data: { login: $login, password: $password }) {
+            user {
+                login
+            }
+        }
+    }
+`
+
+export { LOGIN_USER_MUTATION, CREATE_BOARD, CREATE_USER };

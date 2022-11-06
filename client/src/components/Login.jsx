@@ -5,9 +5,9 @@ import { useEffect } from "react";
 import { useMutation, useQuery } from '@apollo/client';
 import useUserStore from "../store/useUserStore";
 import { useNavigate, Link } from 'react-router-dom'
-import { ME } from "../graphql/quereis";
 
-// PASSWORD = бебраasdasd
+
+// PASSWORD = бебра424242
 const Login = () => {
     const [login, setLogin] = useState('')
     const [password, setPassword] = useState('')    
@@ -18,7 +18,7 @@ const Login = () => {
 
     useEffect(() => {
         if(!data) return;        
-        if(data.login.user.login) navigate('/') 
+        if(data.login.user.login) 
         setUser(data.login.user.login)
         localStorage.setItem('accessToken', data.login.accessToken);
         localStorage.setItem('refreshToken', data.login.refreshToken);        
@@ -39,6 +39,7 @@ const Login = () => {
                 }
             }
         )  
+        navigate('/')
     }
    
     return (
