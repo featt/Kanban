@@ -4,7 +4,7 @@ import { LOGIN_USER_MUTATION } from '../graphql/mutations'
 import { useEffect } from "react";
 import { useMutation, useQuery } from '@apollo/client';
 import useUserStore from "../store/useUserStore";
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate, Link, Navigate } from 'react-router-dom'
 
 
 // PASSWORD = бебра424242
@@ -18,28 +18,27 @@ const Login = () => {
 
     useEffect(() => {
         if(!data) return;        
-        if(data.login.user.login) 
         setUser(data.login.user.login)
+        if(data.login.accessToken) navigate('/');
         localStorage.setItem('accessToken', data.login.accessToken);
         localStorage.setItem('refreshToken', data.login.refreshToken);        
     }, [data])
     
     const handlerLogin = async (e) => {
-        e.preventDefault()  
+        e.preventDefault(); 
         if(error) return toast({
             title: 'Логин или пароль не верны',            
             status: 'error',
             duration: 9000,
             isClosable: true,
-        })     
+        })             
         await loginUser( { 
             variables: {
                     login: login,
                     password: password
                 }
             }
-        )  
-        navigate('/')
+        )         
     }
    
     return (
