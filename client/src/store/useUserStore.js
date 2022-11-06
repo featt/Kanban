@@ -7,7 +7,14 @@ let store = (set, get) => ({
         set({
             user: login
         })
-    },    
+    }, 
+    
+    token: '',
+    setToken: (token) => {        
+        set({
+            token: token
+        })
+    },
 })
 
 store = persist(store)
