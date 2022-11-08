@@ -4,6 +4,8 @@ import { useDroppable } from "@dnd-kit/core"
 import { SortableContext, verticalListSortingStrategy, arraySwap } from '@dnd-kit/sortable'
 import { useRef, useState } from "react"
 import { FaRegListAlt, FaRegCheckCircle, FaRegClock, FaPlus } from 'react-icons/fa';
+import { useMutation } from "@apollo/client"
+import { CREATE_TASK } from "../graphql/mutations"
 
 const setNameCol = id => {
     if(id === 'root') return 'Дела'   
@@ -25,16 +27,23 @@ const setIcon = id => {
 
 
 const Column = (props) => {  
-    const { id, items } = props;    
+    const { id, items, boardId, refetch } = props;    
     const { setNodeRef } = useDroppable({ id });    
     const inputRef = useRef();
     const [toggle, setToggle] = useState(false)
+    const [createTask] = useMutation(CREATE_TASK)
     
-    const handelOnClick = () => {
+    const handelOnClick = async () => {
         setToggle(p => !p)
         if(inputRef.current.value === '') return;
-        items.push(inputRef.current.value);
-        inputRef.current.value = '';
+        await createTask({
+            variables: {
+                title: inputRef.current.value,
+                boardId
+            }
+        })
+        await refetch()
+        console.log(boardId);        
     }
 
     return (

@@ -14,7 +14,7 @@ const Main = () => {
         <>
             <Sidebar refetchBoards={refetch}/>
 
-            <Board items={items}/>
+            <Board items={items} boardId={boardId} refetch={refetch} />
         </>
     )
 }

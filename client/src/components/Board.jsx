@@ -46,7 +46,7 @@ const defaultAnnouncements = {
     }
   };
 
-const Board = ({ items }) => {
+const Board = ({ items, boardId, refetch }) => {
     const [activeId, setActiveId] = useState();   
     const sensors = useSensors(
         useSensor(PointerSensor),
@@ -72,7 +72,7 @@ const Board = ({ items }) => {
                   onDragOver={handleDragOver}
                   onDragEnd={handleDragEnd}                       
               >
-                  <Column id="root" items={items.root} />
+                  <Column id="root" items={items.root} boardId={boardId} refetch={refetch} />
                   <Column id="container1" items={items.container1} />
                   <Column id="container2" items={items.container2} />
                   <DragOverlay>{activeId ? <ColumnItem id={activeId} /> : null}</DragOverlay>

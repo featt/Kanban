@@ -41,4 +41,13 @@ const CREATE_TASK = gql`
     }
 `
 
-export { LOGIN_USER_MUTATION, CREATE_BOARD, CREATE_USER, CREATE_TASK };
+const SET_IN_PROGRESS = gql`
+    mutation SetInProgress($taskId: Int!) {
+        setInProgress(data: { taskId: $taskId }) {
+            id
+            title
+        }
+    }
+`
+
+export { LOGIN_USER_MUTATION, CREATE_BOARD, CREATE_USER, CREATE_TASK, SET_IN_PROGRESS };
