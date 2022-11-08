@@ -31,7 +31,7 @@ const Column = (props) => {
     const { setNodeRef } = useDroppable({ id });    
     const inputRef = useRef();
     const [toggle, setToggle] = useState(false)
-    const [createTask] = useMutation(CREATE_TASK)
+    const [createTask, { data, error, loading }] = useMutation(CREATE_TASK)
     
     const handelOnClick = async () => {
         setToggle(p => !p)
