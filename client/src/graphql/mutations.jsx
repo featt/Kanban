@@ -31,4 +31,14 @@ const CREATE_USER = gql`
     }
 `
 
+const CREATE_TASK = gql`
+    mutation CreateTask($boardId: Int!, $title: String!) {
+        createTask(data: { boardId: $boardId, title: $title }) {
+            id
+            title
+            status
+        }
+    }
+`
+
 export { LOGIN_USER_MUTATION, CREATE_BOARD, CREATE_USER };
