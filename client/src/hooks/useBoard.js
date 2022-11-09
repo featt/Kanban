@@ -3,8 +3,6 @@ import { useQuery } from '@apollo/client'
 
 export const useBoard = (boardId) => {
 
-  if (boardId === null) return null
-
   const { data, refetch } = useQuery(GET_BOARD, {
     variables: {boardId},
     fetchPolicy: 'no-cache'
@@ -27,5 +25,5 @@ export const useBoard = (boardId) => {
     container2: groupedTasks["DONE"]?.map(t => t.title) || []
   }
 
-  return { items, refetch, titleBoard };
+  return { items: boardId === 0 ? null : items , refetch, titleBoard };
 }

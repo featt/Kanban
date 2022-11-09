@@ -54,30 +54,29 @@ const Board = ({ items, boardId, refetch, titleBoard }) => {
           coordinateGetter: sortableKeyboardCoordinates
         })
     );
-
-
-
-    if(items === null) return <Heading color='white'>Выберите доску</Heading>
+ 
 
     return (
         <VStack w='80%' bg='#191A23' h='100vh' p='55px' >
-                
-          <Text fontSize='32px' color='white'>{titleBoard ? titleBoard : 'Loading...'}</Text>
-          <HStack justifyContent='space-around' w='100%' h='100vh' alignItems='flex-start'>
-              <DndContext
-                  announcements={defaultAnnouncements}
-                  sensors={sensors}
-                  collisionDetection={closestCorners}
-                  onDragStart={handleDragStart}
-                  onDragOver={handleDragOver}
-                  onDragEnd={handleDragEnd}                       
-              >
-                  <Column id="root" items={items.root} boardId={boardId} refetch={refetch} />
-                  <Column id="container1" items={items.container1} />
-                  <Column id="container2" items={items.container2} />
-                  <DragOverlay>{activeId ? <ColumnItem id={activeId} /> : null}</DragOverlay>
-              </DndContext>
-          </HStack>
+           {items === null ? <Heading color='white'>Выберите доску</Heading> : <>
+            <Text fontSize='32px' color='white'>{titleBoard ? titleBoard : 'Loading...'}</Text>
+            <HStack justifyContent='space-around' w='100%' h='100vh' alignItems='flex-start'>
+                <DndContext
+                    announcements={defaultAnnouncements}
+                    sensors={sensors}
+                    collisionDetection={closestCorners}
+                    onDragStart={handleDragStart}
+                    onDragOver={handleDragOver}
+                    onDragEnd={handleDragEnd}                       
+                >
+                    <Column id="root" items={items.root} boardId={boardId} refetch={refetch} />
+                    <Column id="container1" items={items.container1} />
+                    <Column id="container2" items={items.container2} />
+                    <DragOverlay>{activeId ? <ColumnItem id={activeId} /> : null}</DragOverlay>
+                </DndContext>
+            </HStack>
+           </>}     
+          
                  
         </VStack>
     );
