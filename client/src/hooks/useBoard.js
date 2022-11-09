@@ -16,6 +16,8 @@ export const useBoard = (boardId) => {
       return rv;
     }, {});
   };
+  
+  const titleBoard = data?.board?.title
 
   const groupedTasks = groupBy(data?.board?.tasks || [], "status") || {}
 
@@ -25,5 +27,5 @@ export const useBoard = (boardId) => {
     container2: groupedTasks["DONE"]?.map(t => t.title) || []
   }
 
-  return { items, refetch };
+  return { items, refetch, titleBoard };
 }

@@ -9,12 +9,12 @@ import { useBoard } from '../hooks/useBoard'
 const Main = () => {
 
     const boardId = +useAtomValue(selectedBoardId)
-    const { items, refetch } = useBoard(boardId)
+    const { items, refetch, titleBoard } = useBoard(boardId)
     return (
         <>
             <Sidebar refetchBoards={refetch}/>
 
-            <Board items={items} boardId={boardId} refetch={refetch} />
+            <Board items={items} boardId={boardId} refetch={refetch} titleBoard={titleBoard} />
         </>
     )
 }

@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client"
-import { Tag, Text, VStack, ListItem, List } from "@chakra-ui/react"
+import { Tag, Text, VStack, ListItem, List, Center } from "@chakra-ui/react"
 import { GET_USER_BOARDS } from "../graphql/quereis"
 import { useSetAtom } from 'jotai'
 import { selectedBoardId } from "../store"
@@ -15,19 +15,24 @@ const BoardList = ({state, refetchBoards }) => {
 
     const selectBoard = useSetAtom(selectedBoardId)
     return (
-        <List w='full'>           
+        <List display='flex' flexDirection='column' w='full' alignItems='center' justifyContent='center'>           
             
             {data.getUserBoards.map(board => (
                 <ListItem 
                     cursor='pointer'
-                    bg='black'
-                    w='full'
+                    bg='#262731'
+                    w='60%'
                     color='white'
                     p='5px' 
-                    mt='8px' 
+                    py='8px'
+                    mt='8px'    
+                    rounded='lg'
+                    boxShadow='base'
                     key={board.id}
                     onClick={onClick(board.id)}
-                >{board.title}</ListItem>
+                >
+                    <Center>{board.title}</Center>
+                </ListItem>
             ))}
                     
         </List>

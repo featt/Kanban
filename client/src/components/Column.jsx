@@ -47,7 +47,7 @@ const Column = (props) => {
     }
 
     return (
-        <VStack color='white' minH='30%' minW='30%' bg='#383838' p='10px' rounded='lg'>
+        <VStack color='white' minH='30%' minW='30%' bg='#363b55' p='10px' rounded='lg'>
 
             <HStack w='100%' justifyContent='space-between'>
                 <Tag size='lg' borderRadius='full' colorScheme={colorTag(id)}>

@@ -17,7 +17,7 @@ const ColumnItem = (props) => {
         transition       
     }
     return (
-        <VStack ref={setNodeRef} style={style} {...attributes} {...listeners} w='100%' minH='100px' bg='#212121' rounded='lg' p='10px'>
+        <VStack ref={setNodeRef} style={style} {...attributes} {...listeners} w='100%' minH='100px' bg='#252630' rounded='lg' p='10px'>
             <Text maxWidth='300px' noOfLines={[1,2,3,4,5,6]} color='white'>{id}</Text>        
         </VStack>
     )

@@ -46,7 +46,7 @@ const defaultAnnouncements = {
     }
   };
 
-const Board = ({ items, boardId, refetch }) => {
+const Board = ({ items, boardId, refetch, titleBoard }) => {
     const [activeId, setActiveId] = useState();   
     const sensors = useSensors(
         useSensor(PointerSensor),
@@ -57,12 +57,12 @@ const Board = ({ items, boardId, refetch }) => {
 
 
 
-    if(items === null) return <Heading color='white'>Ты дура</Heading>
+    if(items === null) return <Heading color='white'>Выберите доску</Heading>
 
     return (
-        <VStack w='80%' bg='#212121' h='100vh' p='55px' >
+        <VStack w='80%' bg='#191A23' h='100vh' p='55px' >
                 
-          <Text fontSize='32px' color='white'>Title board</Text>
+          <Text fontSize='32px' color='white'>{titleBoard ? titleBoard : 'Loading...'}</Text>
           <HStack justifyContent='space-around' w='100%' h='100vh' alignItems='flex-start'>
               <DndContext
                   announcements={defaultAnnouncements}

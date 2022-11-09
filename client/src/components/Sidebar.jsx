@@ -33,7 +33,7 @@ const Sidebar = ({ refetchBoards }) => {
     }
 
     return (
-        <VStack w='20%' bg='#292929' h='100vh' color='white' pl='15px' justifyContent='space-between'>
+        <VStack w='20%' bg='#191A23' h='100vh' color='white' pl='15px' borderRightColor='#845ef7' borderRightWidth='0.3px' justifyContent='space-between'>
             
             <FormControl display='flex' w='80%' as='form' method="post" onSubmit={handlerBoards} flexDirection='row' mt='40px'>                             
                 <Input name="title" ref={inputRef} placeholder="Введиет название..."/>
