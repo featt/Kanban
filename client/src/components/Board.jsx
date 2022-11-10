@@ -12,10 +12,6 @@ import {
 import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { useState } from "react"
 import ColumnItem from "./ColumnItem";
-import { useAtomValue } from "jotai";
-import { selectedBoardId } from "../store";
-import { useQuery } from '@apollo/client'
-import {GET_BOARD} from '../graphql/quereis'
 
 const defaultAnnouncements = {
     onDragStart(id) {
