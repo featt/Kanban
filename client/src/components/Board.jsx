@@ -1,4 +1,4 @@
-import { HStack, Text, Heading, VStack } from "@chakra-ui/react"
+import { HStack, Text, Heading, VStack, Box } from "@chakra-ui/react"
 import Column from "./Column"
 import {
     DndContext,
@@ -12,6 +12,7 @@ import {
 import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { useState } from "react"
 import ColumnItem from "./ColumnItem";
+import useUserStore from "../store/useUserStore";
 
 const defaultAnnouncements = {
     onDragStart(id) {
@@ -44,6 +45,7 @@ const defaultAnnouncements = {
 
 const Board = ({ items, boardId, refetch, titleBoard }) => {
     const [activeId, setActiveId] = useState();   
+    const user = useUserStore(state => state.user)
     const sensors = useSensors(
         useSensor(PointerSensor),
         useSensor(KeyboardSensor, {
@@ -54,7 +56,13 @@ const Board = ({ items, boardId, refetch, titleBoard }) => {
 
     return (
         <VStack w='80%' bg='#191A23' h='100vh' p='55px' >
-           {items === null ? <Heading color='white'>Выберите доску</Heading> : <>
+           {items === null ? (
+            <Box w='80%' h='36%' bg='#343649' px={20} py={30} rounded='lg' shadow='outline'>
+              <Heading mb={10} color='white'>Добро пожаловать в Productivity, {user}!</Heading>
+              <Heading mb={8} size='lg' color='white'>Мы радя тебя видеть ❤️</Heading>
+              <Heading size='md' color='white'>{user}, для того чтобы начать пользововаться Productivity, создай или выбери доску!</Heading>
+            </Box>
+           ) : <>
             <Text fontSize='32px' color='white'>{titleBoard ? titleBoard : 'Loading...'}</Text>
             <HStack justifyContent='space-around' w='100%' h='100vh' alignItems='flex-start'>
                 <DndContext
