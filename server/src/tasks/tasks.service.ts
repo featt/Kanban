@@ -7,7 +7,7 @@ import { TaskStatus } from '@prisma/client';
 export class TasksService {
   constructor(private prisma: PrismaService) {}
 
-  async create(title: string, boardId: number) { 
+  async create(title: string, boardId: string) { 
    return this.prisma.task.create({
       data: {
         title,
@@ -16,11 +16,11 @@ export class TasksService {
     })
   }
 
-  async getBoardTasks(boardId: number) {
+  async getBoardTasks(boardId: string) {
     return await this.prisma.board.findFirst({where: {id: boardId}}).tasks();
   }
 
-  async changeStatus(taskId: number, status: TaskStatus) {
+  async changeStatus(taskId: string, status: TaskStatus) {
     return await this.prisma.task.update({
       where: {id: taskId},
       data: {
