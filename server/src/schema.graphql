@@ -23,7 +23,7 @@ input ChangePasswordInput {
 }
 
 input ChangeStatusInput {
-  taskId: Int!
+  taskId: String!
 }
 
 input CreateBoardInput {
@@ -31,12 +31,12 @@ input CreateBoardInput {
 }
 
 input CreateTaskInput {
-  boardId: Int!
+  boardId: String!
   title: String!
 }
 
 input GetBoardInput {
-  boardId: Int!
+  boardId: String!
 }
 
 """
@@ -55,7 +55,7 @@ type Mutation {
   createTask(data: CreateTaskInput!): Task!
   login(data: LoginInput!): Auth!
   refreshToken(token: JWT!): Token!
-  removeBoard(id: Int!): Board!
+  removeBoard(id: String!): Board!
   setDone(data: ChangeStatusInput!): Task!
   setInProgress(data: ChangeStatusInput!): Task!
   setNotDone(data: ChangeStatusInput!): Task!
