@@ -2,7 +2,7 @@ import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 
 const httpLink = createHttpLink({
-    uri: 'https://tyrkinn-improved-eureka-5xpqxjqpjvg3v7jj-3000.preview.app.github.dev/graphql',
+    uri: 'http://localhost:3000/graphql',
 });
 
 const authLink = setContext((_, { headers }) => {

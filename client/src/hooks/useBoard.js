@@ -18,12 +18,12 @@ export const useBoard = (boardId) => {
   const titleBoard = data?.board?.title
 
   const groupedTasks = groupBy(data?.board?.tasks || [], "status") || {}
-
+  
   const items = {
     root:  groupedTasks["NOT_DONE"]?.map(t => t.title) || [],
     container1: groupedTasks["IN_PROGRESS"]?.map(t => t.title) || [],
     container2: groupedTasks["DONE"]?.map(t => t.title) || []
   }
-
-  return { items: boardId === 0 ? null : items , refetch, titleBoard };
+  console.log(items);
+  return { items: boardId === '' ? null : items , refetch, titleBoard };
 }

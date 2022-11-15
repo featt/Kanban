@@ -18,7 +18,7 @@ const GET_USER_BOARDS = gql`
 `
 
 const GET_BOARD = gql`
-    query Board($boardId: Int!) {
+    query Board($boardId: String!) {
         board(data: { boardId: $boardId }) {
             id
             title

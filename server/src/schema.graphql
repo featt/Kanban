@@ -77,7 +77,7 @@ input SignupInput {
 }
 
 type Task {
-  boardId: Int!
+  boardId: String!
   id: ID!
   status: String!
   title: String!

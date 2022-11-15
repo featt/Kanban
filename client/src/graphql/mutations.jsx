@@ -32,7 +32,7 @@ const CREATE_USER = gql`
 `
 
 const CREATE_TASK = gql`
-    mutation CreateTask($boardId: Int!, $title: String!) {
+    mutation CreateTask($boardId: String!, $title: String!) {
         createTask(data: { boardId: $boardId, title: $title }) {
             id
             title
@@ -42,7 +42,7 @@ const CREATE_TASK = gql`
 `
 
 const SET_IN_PROGRESS = gql`
-    mutation SetInProgress($taskId: Int!) {
+    mutation SetInProgress($taskId: String!) {
         setInProgress(data: { taskId: $taskId }) {
             id
             title
@@ -50,4 +50,13 @@ const SET_IN_PROGRESS = gql`
     }
 `
 
-export { LOGIN_USER_MUTATION, CREATE_BOARD, CREATE_USER, CREATE_TASK, SET_IN_PROGRESS };
+const SET_DONE = gql`
+    mutation SetDone($taskId: String!) {
+        setDone(data: {taskId: $taskId}) {
+            id
+            title
+        }
+    }
+`
+
+export { LOGIN_USER_MUTATION, CREATE_BOARD, CREATE_USER, CREATE_TASK, SET_IN_PROGRESS, SET_DONE };
