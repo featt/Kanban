@@ -1,6 +1,6 @@
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "mongodb"
+  url      = "mongodb+srv://feat:424242@cluster0.wiycgvv.mongodb.net/kaban?retryWrites=true&w=majority"
 }
 
 generator client {
@@ -18,25 +18,24 @@ enum TaskStatus {
 }
 
 model User {
-  id       Int     @id @default(autoincrement())
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
   login    String  @unique
   password String
   boards   Board[]
 }
 
-
 model Board {
-  id     Int    @id @default(autoincrement())
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
   title  String
   tasks  Task[]
   user   User   @relation(fields: [userId], references: [id])
-  userId Int
+  userId String
 }
 
 model Task {
-  id      Int        @id @default(autoincrement())
+  id      String     @id @default(auto()) @map("_id") @db.ObjectId
   title   String
   board   Board      @relation(fields: [boardId], references: [id])
-  boardId Int
+  boardId String
   status  TaskStatus @default(NOT_DONE)
 }
