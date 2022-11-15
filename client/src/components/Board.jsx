@@ -13,6 +13,10 @@ import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { useState } from "react"
 import ColumnItem from "./ColumnItem";
 import useUserStore from "../store/useUserStore";
+import { useEffect } from "react";
+import { useMutation } from "@apollo/client";
+import { SET_IN_PROGRESS } from "../graphql/mutations";
+
 
 const defaultAnnouncements = {
     onDragStart(id) {
@@ -46,14 +50,20 @@ const defaultAnnouncements = {
 const Board = ({ items, boardId, refetch, titleBoard }) => {
     const [activeId, setActiveId] = useState();   
     const user = useUserStore(state => state.user)
+    const [setInProgress, { data }] = useMutation(SET_IN_PROGRESS)
     const sensors = useSensors(
         useSensor(PointerSensor),
         useSensor(KeyboardSensor, {
           coordinateGetter: sortableKeyboardCoordinates
         })
     );
- 
-
+    console.log(activeId);
+    const [tasks, setItems] = useState()
+        
+    useEffect(() => {
+      setItems(items)          
+    }, [items])
+    console.log(tasks);
     return (
         <VStack w='80%' bg='#191A23' h='100vh' p='55px' >
            {items === null ? (
@@ -106,7 +116,13 @@ const Board = ({ items, boardId, refetch, titleBoard }) => {
 
         const activeContainer = findContainer(id);
         const overContainer = findContainer(overId);
-        console.log(overContainer);
+        if(overId === 'container1') {
+          setInProgress({
+            variables: {
+              taskId: "637387a121682a518d0869ad"
+            }
+          })
+        }
         if (
           !activeContainer ||
           !overContainer ||

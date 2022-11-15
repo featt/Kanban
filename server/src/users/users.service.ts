@@ -11,7 +11,7 @@ export class UsersService {
   ) {}
 
   async changePassword(
-    userId: number,
+    userId: string,
     userPassword: string,
     changePassword: ChangePasswordInput
   ) {

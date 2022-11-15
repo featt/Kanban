@@ -45,7 +45,7 @@ const Column = (props) => {
         await refetch()
         console.log(boardId);        
     }
-
+    //console.log(data?.createTask?.id);
     return (
         <VStack color='white' minH='30%' minW='30%' bg='#363b55' p='10px' rounded='lg'>
 

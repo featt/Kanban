@@ -3,25 +3,25 @@
 //// ------------------------------------------------------
 
 Table User {
-  id Int [pk, increment]
+  id String [pk]
   login String [unique, not null]
   password String [not null]
   boards Board [not null]
 }
 
 Table Board {
-  id Int [pk, increment]
+  id String [pk]
   title String [not null]
   tasks Task [not null]
   user User [not null]
-  userId Int [not null]
+  userId String [not null]
 }
 
 Table Task {
-  id Int [pk, increment]
+  id String [pk]
   title String [not null]
   board Board [not null]
-  boardId Int [not null]
+  boardId String [not null]
   status TaskStatus [not null, default: 'NOT_DONE']
 }
 

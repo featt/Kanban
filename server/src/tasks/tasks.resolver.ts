@@ -1,15 +1,18 @@
 import { ChangeStatusInput } from './dto/change-status.input';
 import { Board } from './../boards/models/board.model';
+import { GqlAuthGuard } from './../auth/gql-auth.guard';
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { TasksService } from './tasks.service';
 import { Task } from './models/task.model';
 import { CreateTaskInput } from './dto/create-task.input';
 import { TaskStatus } from '@prisma/client';
+import { UseGuards } from '@nestjs/common/decorators';
 
 @Resolver(() => Task)
 export class TasksResolver {
   constructor(private tasksService: TasksService) {}
 
+  @UseGuards(GqlAuthGuard)
   @Mutation(() => Task)
   createTask(@Args('data') createTaskInput: CreateTaskInput) {
     return this.tasksService.create(createTaskInput.title, createTaskInput.boardId);

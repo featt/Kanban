@@ -9,7 +9,7 @@ export class Task extends BaseModel {
   title: string;
 
   @Field()
-  boardId: number;
+  boardId: string;
 
   @Field()  
   status: string

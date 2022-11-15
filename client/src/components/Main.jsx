@@ -8,7 +8,7 @@ import { useBoard } from '../hooks/useBoard'
 
 const Main = () => {
 
-    const boardId = +useAtomValue(selectedBoardId)
+    const boardId = useAtomValue(selectedBoardId)
     const { items, refetch, titleBoard } = useBoard(boardId)
     return (
         <>

@@ -21,7 +21,7 @@ export class AuthService {
     private readonly prisma: PrismaService,
     private readonly passwordService: PasswordService,
     private readonly configService: ConfigService
-  ) {}
+  ) { }
 
   async createUser(payload: SignupInput): Promise<Token> {
     const hashedPassword = await this.passwordService.hashPassword(
@@ -71,7 +71,7 @@ export class AuthService {
     });
   }
 
-  validateUser(userId: number): Promise<User> {
+  validateUser(userId: User['id']): Promise<User> {
     return this.prisma.user.findUnique({ where: { id: userId } });
   }
 
@@ -80,18 +80,18 @@ export class AuthService {
     return this.prisma.user.findUnique({ where: { id } });
   }
 
-  generateTokens(payload: { userId: number }): Token {
+  generateTokens(payload: { userId: User['id'] }): Token {
     return {
       accessToken: this.generateAccessToken(payload),
       refreshToken: this.generateRefreshToken(payload),
     };
   }
 
-  private generateAccessToken(payload: { userId: number }): string {
+  private generateAccessToken(payload: { userId: User['id'] }): string {
     return this.jwtService.sign(payload);
   }
 
-  private generateRefreshToken(payload: { userId: number }): string {
+  private generateRefreshToken(payload: { userId: User['id'] }): string {
     const securityConfig = this.configService.get<SecurityConfig>('security');
     return this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_REFRESH_SECRET'),

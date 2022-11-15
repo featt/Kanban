@@ -6,5 +6,5 @@ export class CreateTaskInput {
   title: string;
 
   @Field()
-  boardId: number
+  boardId: string
 }
