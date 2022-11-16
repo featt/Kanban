@@ -8,190 +8,113 @@ import {
     PointerSensor,
     useSensor,
     useSensors
-  } from "@dnd-kit/core";
-import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
+} from "@dnd-kit/core";
+import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { useState } from "react"
 import ColumnItem from "./ColumnItem";
 import useUserStore from "../store/useUserStore";
-import { useEffect } from "react";
 import { useMutation } from "@apollo/client";
-import { SET_IN_PROGRESS } from "../graphql/mutations";
+import { SET_DONE, SET_IN_PROGRESS } from "../graphql/mutations";
+import { FaRegListAlt, FaRegCheckCircle, FaRegClock, FaPlus } from 'react-icons/fa';
 
-
-const defaultAnnouncements = {
-    onDragStart(id) {
-      console.log(`Picked up draggable item ${id}.`);
-    },
-    onDragOver(id, overId) {
-      if (overId) {
-        console.log(
-          `Draggable item ${id} was moved over droppable area ${overId}.`
-        );
-        return;
-      }
-  
-      console.log(`Draggable item ${id} is no longer over a droppable area.`);
-    },
-    onDragEnd(id, overId) {
-      if (overId) {
-        console.log(
-          `Draggable item ${id} was dropped over droppable area ${overId}`
-        );
-        return;
-      }
-  
-      console.log(`Draggable item ${id} was dropped.`);
-    },
-    onDragCancel(id) {
-      console.log(`Dragging was cancelled. Draggable item ${id} was dropped.`);
-    }
-  };
 
 const Board = ({ items, boardId, refetch, titleBoard }) => {
-    const [activeId, setActiveId] = useState();   
+    const [activeId, setActiveId] = useState();
     const user = useUserStore(state => state.user)
-    const [setInProgress, { data }] = useMutation(SET_IN_PROGRESS)
+    const [setInProgress, { loading }] = useMutation(SET_IN_PROGRESS)
+    const [setDone] = useMutation(SET_DONE)
     const sensors = useSensors(
         useSensor(PointerSensor),
         useSensor(KeyboardSensor, {
-          coordinateGetter: sortableKeyboardCoordinates
+            coordinateGetter: sortableKeyboardCoordinates
         })
     );
-    console.log(activeId);
-    const [tasks, setItems] = useState()
-        
-    useEffect(() => {
-      setItems(items)          
-    }, [items])
-    console.log(tasks);
+
     return (
         <VStack w='80%' bg='#191A23' h='100vh' p='55px' >
-           {items === null ? (
-            <Box w='80%' h='36%' bg='#343649' px={20} py={30} rounded='lg' shadow='outline'>
-              <Heading mb={10} color='white'>Добро пожаловать в Productivity, {user}!</Heading>
-              <Heading mb={8} size='lg' color='white'>Мы радя тебя видеть ❤️</Heading>
-              <Heading size='md' color='white'>{user}, для того чтобы начать пользововаться Productivity, создай или выбери доску!</Heading>
-            </Box>
-           ) : <>
-            <Text fontSize='32px' color='white'>{titleBoard ? titleBoard : 'Loading...'}</Text>
-            <HStack justifyContent='space-around' w='100%' h='100vh' alignItems='flex-start'>
-                <DndContext
-                    announcements={defaultAnnouncements}
-                    sensors={sensors}
-                    collisionDetection={closestCorners}
-                    onDragStart={handleDragStart}
-                    onDragOver={handleDragOver}
-                    onDragEnd={handleDragEnd}                       
-                >
-                    <Column id="root" items={items.root} boardId={boardId} refetch={refetch} />
-                    <Column id="container1" items={items.container1} />
-                    <Column id="container2" items={items.container2} />
-                    <DragOverlay>{activeId ? <ColumnItem id={activeId} /> : null}</DragOverlay>
-                </DndContext>
-            </HStack>
-           </>}     
-          
-                 
+            {!boardId ? (
+                <Box w='80%' h='36%' bg='#343649' px={20} py={30} rounded='lg' shadow='outline'>
+                    <Heading mb={10} color='white'>Добро пожаловать в Productivity, {user}!</Heading>
+                    <Heading mb={8} size='lg' color='white'>Мы радя тебя видеть ❤️</Heading>
+                    <Heading size='md' color='white'>{user}, для того чтобы начать пользововаться Productivity, создай или выбери доску!</Heading>
+                </Box>
+            ) : <>
+                <Text fontSize='32px' color='white'>{titleBoard ? titleBoard : 'Loading...'}</Text>
+                <HStack justifyContent='space-around' w='100%' h='100vh' alignItems='flex-start'>
+                    <DndContext
+                        sensors={sensors}
+                        collisionDetection={closestCorners}
+                        onDragStart={handleDragStart}
+                        onDragEnd={handleDragEnd}
+                    >
+                        <Column
+                            id="NOT_DONE"
+                            icon={<FaRegListAlt style={{ marginRight: "10px" }} />}
+                            items={items.NOT_DONE}
+                            colorTag='cyan'
+                            tag="Дела"
+                            boardId={boardId}
+                            refetch={refetch}
+                        />
+                        <Column
+                            id="IN_PROGRESS"
+                            colorTag='orange'
+                            tag="В процессе"
+                            icon={<FaRegClock style={{ marginRight: "10px" }} />}
+                            items={items.IN_PROGRESS}
+                        />
+                        <Column
+                            id="DONE"
+                            colorTag='green'
+                            tag="Выполненные"
+                            icon={<FaRegCheckCircle style={{ marginRight: "10px" }} />}
+                            items={items.DONE}
+                        />
+                        <DragOverlay>{activeId ? <ColumnItem id={activeId} /> : null}</DragOverlay>
+                    </DndContext>
+                </HStack>
+            </>}
+
+
         </VStack>
     );
 
     function findContainer(id) {
-        if (id in items) {
-          return id;
-        }
-    
-        return Object.keys(items).find((key) => items[key].includes(id));
+        return id.status;
     }
 
     function handleDragStart(event) {
         const { active } = event;
-        const { id } = active;    
+        const { id } = active;
         setActiveId(id);
     }
 
-    function handleDragOver(event) {
-        const { active, over } = event;
-        const { id } = active;
-        const { id: overId } = over;
+    async function handleDragEnd(event) {
+        const over = event.over.id;
+        const active = event.active.id;
 
-        const activeContainer = findContainer(id);
-        const overContainer = findContainer(overId);
-        if(overId === 'container1') {
-          setInProgress({
-            variables: {
-              taskId: "637387a121682a518d0869ad"
-            }
-          })
-        }
+
+        const activeContainer = findContainer(active);
+        const overContainer = findContainer(over);
+
+
+
         if (
-          !activeContainer ||
-          !overContainer ||
-          activeContainer === overContainer
+            !activeContainer ||
+            !overContainer ||
+            activeContainer === overContainer
         ) {
-          return;
+            return;
         }
-    
-        setItems((prev) => {
-          const activeItems = prev[activeContainer];
-          const overItems = prev[overContainer];
 
-          const activeIndex = activeItems.indexOf(id);
-          const overIndex = overItems.indexOf(overId);
-    
-          let newIndex;
-          if (overId in prev) {
-            newIndex = overItems.length + 1;
-          } else {
-            const isBelowLastItem =
-              over &&
-              overIndex === overItems.length - 1;
-    
-            const modifier = isBelowLastItem ? 1 : 0;
-    
-            newIndex = overIndex >= 0 ? overIndex + modifier : overItems.length + 1;
-          }
-    
-          return {
-            ...prev,
-            [activeContainer]: [
-              ...prev[activeContainer].filter((item) => item !== active.id)
-            ],
-            [overContainer]: [
-              ...prev[overContainer].slice(0, newIndex),
-              items[activeContainer][activeIndex],
-              ...prev[overContainer].slice(newIndex, prev[overContainer].length)
-            ]
-          };
-        });
+        if (overContainer === 'IN_PROGRESS') {
+            await setInProgress({ variables: { taskId: active.id } })
+        } else if (overContainer === 'DONE') {
+            await setDone({ variables: { taskId: active.id } })
+        }
+
+        await refetch()
     }
-    function handleDragEnd(event) {
-        const { active, over } = event;
-        const { id } = active;
-        const { id: overId } = over;
-    
-        const activeContainer = findContainer(id);
-        const overContainer = findContainer(overId);
-    
-        if (
-          !activeContainer ||
-          !overContainer ||
-          activeContainer !== overContainer
-        ) {
-          return;
-        }
-    
-        const activeIndex = items[activeContainer].indexOf(active.id);
-        const overIndex = items[overContainer].indexOf(overId);
-    
-        if (activeIndex !== overIndex) {
-          setItems((items) => ({
-            ...items,
-            [overContainer]: arrayMove(items[overContainer], activeIndex, overIndex)
-          }));
-        }
-    
-        setActiveId(null);
-      }
 }
 
 export default Board
