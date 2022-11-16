@@ -23,6 +23,7 @@ const GET_BOARD = gql`
             id
             title
             tasks {
+                id
                 boardId
                 title
                 status

@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/client'
 export const useBoard = (boardId) => {
 
   const { data, refetch } = useQuery(GET_BOARD, {
-    variables: {boardId},
+    variables: { boardId },
     fetchPolicy: 'no-cache'
   })
 
@@ -14,16 +14,16 @@ export const useBoard = (boardId) => {
       return rv;
     }, {});
   };
-  
+
   const titleBoard = data?.board?.title
 
   const groupedTasks = groupBy(data?.board?.tasks || [], "status") || {}
-  
+
   const items = {
-    root:  groupedTasks["NOT_DONE"]?.map(t => t.title) || [],
-    container1: groupedTasks["IN_PROGRESS"]?.map(t => t.title) || [],
-    container2: groupedTasks["DONE"]?.map(t => t.title) || []
+    NOT_DONE: groupedTasks["NOT_DONE"] || [],
+    IN_PROGRESS: groupedTasks["IN_PROGRESS"] || [],
+    DONE: groupedTasks["DONE"] || []
   }
-  console.log(items);
-  return { items: boardId === '' ? null : items , refetch, titleBoard };
+
+  return { items: data === null ? null : items, refetch, titleBoard };
 }

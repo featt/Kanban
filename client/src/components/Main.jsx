@@ -12,8 +12,7 @@ const Main = () => {
     const { items, refetch, titleBoard } = useBoard(boardId)
     return (
         <>
-            <Sidebar refetchBoards={refetch}/>
-
+            <Sidebar refetchBoards={refetch} />
             <Board items={items} boardId={boardId} refetch={refetch} titleBoard={titleBoard} />
         </>
     )
